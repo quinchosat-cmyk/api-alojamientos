@@ -3,8 +3,10 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+
 class Config:
     """Configuracion central de la aplicacion."""
+
     # docstring
 
     SQLALCHEMY_TRACK_MODIFICATIONS = False
@@ -20,7 +22,7 @@ class Config:
     _db_port = os.getenv("DB_PORT", "3306").strip()
     _db_name = os.getenv("DB_NAME", "alojamientos_db").strip()
 
-    #motor+drive://usuario:password@host:puerto/nombre_db
+    # motor+drive://usuario:password@host:puerto/nombre_db
     SQLALCHEMY_DATABASE_URI = (
         f"mysql+pymysql://{_db_user}:{_db_password}@{_db_host}:{_db_port}/{_db_name}"
     )
@@ -39,7 +41,6 @@ class Config:
         SQLALCHEMY_DATABASE_URI = "sqlite:///:memory:"
         if not SECRET_KEY:
             SECRET_KEY = "test-key-for-pytest"
-    
 
     _origins_env = os.getenv("CORS_ALLOWED_ORIGINS", "")
     if _origins_env:
@@ -53,4 +54,4 @@ class Config:
         ]
 
     BASE_DIR = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
-    #raiz del proyecto
+    # raiz del proyecto

@@ -6,7 +6,7 @@ from flask_migrate import Migrate
 from app.config import Config
 
 # Version de la API
-API_VERSION = 'v1'
+API_VERSION = "v1"
 
 # Instancia de SQLAlchemy (se inicializa dentro del factory)
 db = SQLAlchemy()
@@ -24,16 +24,16 @@ def create_app():
     db.init_app(app)
 
     migrate.init_app(app, db)
-    
-    CORS(app, origins=app.config['CORS_ALLOWED_ORIGINS'])
+
+    CORS(app, origins=app.config["CORS_ALLOWED_ORIGINS"])
 
     # Endpoint de salud (publico, sin auth)
-    @app.route('/health', methods=['GET'])
+    @app.route("/health", methods=["GET"])
     def health():
         return {
             "status": "ok",
             "service": "alojamientos-api",
-            "version": API_VERSION
+            "version": API_VERSION,
         }, 200
 
     # Manejadores globales de error
@@ -43,6 +43,9 @@ def create_app():
 
     @app.errorhandler(500)
     def error_interno(error):
-        return {"success": False, "error": {"message": "Error interno del servidor"}}, 500
+        return {
+            "success": False,
+            "error": {"message": "Error interno del servidor"},
+        }, 500
 
     return app
