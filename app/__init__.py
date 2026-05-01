@@ -38,6 +38,9 @@ def create_app():
     from app.dominios.usuarios.controladores import usuarios_bp
     from app.dominios.usuarios.servicios import UsuarioServicio
     from app.dominios.usuarios import controladores as usuarios_ctrl
+    from app.dominios.usuarios.controladores import usuarios_bp, admin_bp
+
+    app.register_blueprint(admin_bp, url_prefix=f'/api/{API_VERSION}/admin')
 
     # Inyectar el servicio con la config correcta
     usuarios_ctrl.usuario_servicio = UsuarioServicio(
@@ -61,7 +64,12 @@ def create_app():
         CorreoYaRegistradoError,
         CredencialesInvalidasError,
         UsuarioNoEncontradoError,
+        PermisoDenegadoError,
     )
+
+    @app.errorhandler(PermisoDenegadoError)
+    def permiso_denegado(error):
+        return {"success": False, "error": {"message": str(error)}}, 403
 
     @app.errorhandler(CorreoYaRegistradoError)
     def correo_duplicado(error):
